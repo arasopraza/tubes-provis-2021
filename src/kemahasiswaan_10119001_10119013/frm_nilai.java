@@ -5,17 +5,256 @@
  */
 package kemahasiswaan_10119001_10119013;
 
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Fiona Avila
  */
 public class frm_nilai extends javax.swing.JFrame {
 
+    koneksi dbsetting;
+    String driver, database, user, pass;
+    Object tabel;
+    
+    String nama_mahasiswa;
+    ArrayList<Mahasiswa> arrMahasiswa = new ArrayList<>();
     /**
      * Creates new form frm_nilai
      */
     public frm_nilai() {
         initComponents();
+        
+        dbsetting = new koneksi();
+        driver = dbsetting.SettingPanel("DBDriver");
+        database = dbsetting.SettingPanel("DBDatabase");
+        user = dbsetting.SettingPanel("DBUsername");
+        pass = dbsetting.SettingPanel("DBPassword");
+                
+        tampil_combo_nama();
+        tampil_combo_nama_mk();
+        tampil_nim_mahasiswa();
+        
+        tbl_nilai.setModel(tableModel);
+        settableload();
+    }
+    
+    private javax.swing.table.DefaultTableModel tableModel = getDefaultTabelModel();
+    private javax.swing.table.DefaultTableModel getDefaultTabelModel() {
+        //  Membuat judul header
+        return new javax.swing.table.DefaultTableModel
+        (
+            new Object[][] {},
+            new String [] {
+                "Nama",
+                "Nama Mata Kuliah",
+                "Absensi",
+                "Tgs 1",
+                "Tgs 2",
+                "Tgs 3",
+                "UTS",
+                "UAS",
+                "Nilai Absen",
+                "Nilai Tugas",
+                "Nilai UTS",
+                "Nilai UAS",
+                "Nilai Akhir",
+                "Indeks",
+                "Ket",
+            }
+        )
+                
+        // disable perubahan pada grid
+        {
+            boolean[] canEdit = new boolean[]
+            {
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+            };
+            
+            public boolean isCellEditable(int rowIndex, int columnIndex)
+            {
+                return canEdit[columnIndex];
+            }
+        };
+    }
+    
+    String data[]=new String[15];
+ 
+    private void settableload() {
+        String stat = "";
+        try {
+            Class.forName(driver);
+            java.sql.Connection kon = DriverManager.getConnection(
+                    database,
+                    user,
+                    pass);
+            Statement stt = kon.createStatement();
+            String SQL = "select t_mahasiswa.nama, t_mata_kuliah.nama_mk, t_nilai.kehadiran,\n" +
+                    "t_nilai.tugas_satu, t_nilai.tugas_dua, t_nilai.tugas_tiga, t_nilai.uts, t_nilai.uas, t_nilai.nilai, t_nilai.indeks, t_nilai.ket\n" +
+                    "from t_nilai JOIN t_mata_kuliah ON\n" +
+                    "t_nilai.kd_mk = t_mata_kuliah.kd_mk JOIN t_mahasiswa ON\n" +
+                    "t_nilai.nim = t_mahasiswa.nim";
+            ResultSet res = stt.executeQuery(SQL);
+            
+            while (res.next()) {
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                data[2] = res.getString(3);
+                data[3] = res.getString(4);
+                data[4] = res.getString(5);
+                data[5] = res.getString(6);
+                data[6] = res.getString(7);
+                data[7] = res.getString(8);
+                data[8] = data[3];
+                data[9] = data[4];
+                data[10] = data[5];
+                data[11] = data[6];
+                data[12] = res.getString(9);
+                data[13] = res.getString(10);
+                data[14] = res.getString(11);
+                tableModel.addRow(data);
+            }
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
+                    JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }
+    
+    public void membersihkan_teks(){
+        txt_nilai_kd_mk.setText("");
+        txt_nilai_nim.setText("");
+        txt_nilai_kehadiran.setText("");
+        txt_nilai_tugas1.setText("");
+        txt_nilai_tugas2.setText("");
+        txt_nilai_tugas3.setText("");
+        txt_nilai_uts.setText("");
+        txt_nilai_uas.setText("");
+    }
+    
+    public void nonaktif_teks(){
+        txt_nilai_kd_mk.setEnabled(false);
+        txt_nilai_nim.setEnabled(false);
+        txt_nilai_kehadiran.setEnabled(false);
+        txt_nilai_tugas1.setEnabled(false);
+        txt_nilai_tugas2.setEnabled(false);
+        txt_nilai_tugas3.setEnabled(false);
+        txt_nilai_uts.setEnabled(false);
+        txt_nilai_uas.setEnabled(false);
+    }
+    
+    public void aktif_teks(){
+        txt_nilai_kd_mk.setEnabled(true);
+        txt_nilai_nim.setEnabled(true);
+        txt_nilai_kehadiran.setEnabled(true);
+        txt_nilai_tugas1.setEnabled(true);
+        txt_nilai_tugas2.setEnabled(true);
+        txt_nilai_tugas3.setEnabled(true);
+        txt_nilai_uts.setEnabled(true);
+        txt_nilai_uas.setEnabled(true);
+    }
+    
+    int row = 0;
+    public void tampil_field(){
+        row = tbl_nilai.getSelectedRow();
+        txt_nilai_kehadiran.setText(tableModel.getValueAt(row, 3).toString());
+        txt_nilai_tugas1.setText(tableModel.getValueAt(row, 4).toString());
+        txt_nilai_tugas2.setText(tableModel.getValueAt(row, 5).toString());
+        txt_nilai_tugas3.setText(tableModel.getValueAt(row, 6).toString());
+        txt_nilai_uts.setText(tableModel.getValueAt(row, 7).toString());
+        txt_nilai_uas.setText(tableModel.getValueAt(row, 8).toString());
+        
+        btn_mata_kuliah_simpan.setEnabled(false);
+        btn_mata_kuliah_ubah.setEnabled(true);
+        btn_mata_kuliah_hapus.setEnabled(true);
+        btn_mata_kuliah_batal.setEnabled(false);
+        aktif_teks();
+    }
+                      
+    public void tampil_combo_nama(){
+         try {
+            Class.forName(driver);
+            java.sql.Connection kon = DriverManager.getConnection(
+                    database,
+                    user,
+                    pass);
+            Statement stt = kon.createStatement();
+            String SQL = "select nim, nama, ttl, tgl_lahir, alamat from t_mahasiswa";
+            ResultSet res = stt.executeQuery(SQL);
+            
+            while (res.next()) {
+                arrMahasiswa.add(new Mahasiswa(res.getString("nim"), res.getString("nama")));
+            }
+            
+            for(int i=0;i<arrMahasiswa.size();i++){
+                combo_nilai_nama.addItem(arrMahasiswa.get(i).getNama());
+            }
+            
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
+                    JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }
+    
+       public void tampil_nim_mahasiswa(){
+        int idx = combo_nilai_nama.getSelectedIndex();
+        nama_mahasiswa = (String)combo_nilai_nama.getSelectedItem();
+        String data[] = new String[1];
+       
+        if(idx>=0){
+            try {
+                java.sql.Connection kon = DriverManager.getConnection(database, user, pass);
+                Statement stt = kon.createStatement();
+                String sql = "SELECT nim FROM t_mahasiswa WHERE nama='"+nama_mahasiswa+"'";      
+                ResultSet res = stt.executeQuery(sql);
+                while(res.next()){
+                    data[0] = res.getString(1);
+                    txt_nilai_nim.setText(data[0]);
+                }
+                res.close();
+                stt.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    
+    public void tampil_combo_nama_mk(){
+          try {
+            Class.forName(driver);
+            java.sql.Connection kon = DriverManager.getConnection(
+                    database,
+                    user,
+                    pass);
+            Statement stt = kon.createStatement();
+            String SQL = "select * from t_mata_kuliah";
+            ResultSet res = stt.executeQuery(SQL);
+            
+            while (res.next()) {
+               combo_nilai_nama_mk.addItem(res.getString("nama_mk"));
+            }
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
+                    JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
     }
 
     /**
@@ -131,7 +370,6 @@ public class frm_nilai extends javax.swing.JFrame {
         lbl_nilai_nama.setText("Nama");
 
         combo_nilai_nama.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
-        combo_nilai_nama.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         lbl_nilai_nim.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
         lbl_nilai_nim.setText("NIM");
@@ -154,7 +392,6 @@ public class frm_nilai extends javax.swing.JFrame {
         lbl_nilai_nama_mk.setText("Nama MK");
 
         combo_nilai_nama_mk.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
-        combo_nilai_nama_mk.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         txt_nilai_kehadiran.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
 
@@ -185,8 +422,6 @@ public class frm_nilai extends javax.swing.JFrame {
 
         txt_nilai_uas.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
 
-        year_nilai_angkatan.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
-
         tbl_nilai.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         tbl_nilai.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
         tbl_nilai.setModel(new javax.swing.table.DefaultTableModel(
@@ -200,6 +435,11 @@ public class frm_nilai extends javax.swing.JFrame {
                 "Nama", "Nama Mata Kuliah", "Absensi", "Tgs 1", "Tgs 2", "Tgs 3", "UTS", "UAS", "Nilai Absen", "Nilai Tugas", "Nilai UTS", "Nilai UAS", "Nilai Akhir", "Indeks", "Ket"
             }
         ));
+        tbl_nilai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_nilaiMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_nilai);
 
         btn_mata_kuliah_tambah.setBackground(new java.awt.Color(255, 255, 255));
@@ -227,6 +467,11 @@ public class frm_nilai extends javax.swing.JFrame {
                 btn_mata_kuliah_ubahMouseExited(evt);
             }
         });
+        btn_mata_kuliah_ubah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_mata_kuliah_ubahActionPerformed(evt);
+            }
+        });
 
         btn_mata_kuliah_hapus.setBackground(new java.awt.Color(255, 255, 255));
         btn_mata_kuliah_hapus.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
@@ -238,6 +483,11 @@ public class frm_nilai extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn_mata_kuliah_hapusMouseExited(evt);
+            }
+        });
+        btn_mata_kuliah_hapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_mata_kuliah_hapusActionPerformed(evt);
             }
         });
 
@@ -494,6 +744,39 @@ public class frm_nilai extends javax.swing.JFrame {
         u.setVisible(true);
         dispose();
     }//GEN-LAST:event_btn_mata_kuliah_keluarActionPerformed
+
+    private void tbl_nilaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_nilaiMouseClicked
+        // TODO add your handling code here:
+        if(evt.getClickCount()==1){
+            tampil_field();
+        }
+    }//GEN-LAST:event_tbl_nilaiMouseClicked
+
+    private void btn_mata_kuliah_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mata_kuliah_hapusActionPerformed
+        // TODO add your handling code here:
+        try {
+             Class.forName(driver);
+             java.sql.Connection kon = DriverManager.getConnection(
+                                    database,
+                                    user,
+                                    pass);
+             Statement stt = kon.createStatement();
+             String SQL = "DELETE FROM t_nilai "
+                                    + "WHERE "
+                                + "='"+tableModel.getValueAt(row, 0).toString()+"'";
+                stt.executeUpdate(SQL);
+                tableModel.removeRow(row);
+                stt.close();
+                kon.close();
+                membersihkan_teks();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_btn_mata_kuliah_hapusActionPerformed
+
+    private void btn_mata_kuliah_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mata_kuliah_ubahActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_mata_kuliah_ubahActionPerformed
 
     /**
      * @param args the command line arguments
