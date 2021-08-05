@@ -5,6 +5,7 @@
  */
 package kemahasiswaan_10119001_10119013;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -22,7 +23,12 @@ public class frm_nilai extends javax.swing.JFrame {
     Object tabel;
     
     String nama_mahasiswa;
+    String nim;
+    String kd_mk;
+    String nama_mk;
+    
     ArrayList<Mahasiswa> arrMahasiswa = new ArrayList<>();
+    ArrayList<MataKuliah> arrMataKuliah = new ArrayList<>();
     /**
      * Creates new form frm_nilai
      */
@@ -34,13 +40,12 @@ public class frm_nilai extends javax.swing.JFrame {
         database = dbsetting.SettingPanel("DBDatabase");
         user = dbsetting.SettingPanel("DBUsername");
         pass = dbsetting.SettingPanel("DBPassword");
-                
-        tampil_combo_nama();
-        tampil_combo_nama_mk();
-        tampil_nim_mahasiswa();
-        
         tbl_nilai.setModel(tableModel);
         settableload();
+        tampil_combo_nama_mahasiswa();
+        tampil_nim();
+        tampil_combo_mata_kulah();
+        tampil_kd_mk();
     }
     
     private javax.swing.table.DefaultTableModel tableModel = getDefaultTabelModel();
@@ -179,44 +184,33 @@ public class frm_nilai extends javax.swing.JFrame {
         aktif_teks();
     }
                       
-    public void tampil_combo_nama(){
-         try {
-            Class.forName(driver);
-            java.sql.Connection kon = DriverManager.getConnection(
-                    database,
-                    user,
-                    pass);
+    public void tampil_combo_nama_mahasiswa(){
+        try {
+            Connection kon = DriverManager.getConnection(database, user, pass);
             Statement stt = kon.createStatement();
-            String SQL = "select nim, nama, ttl, tgl_lahir, alamat from t_mahasiswa";
-            ResultSet res = stt.executeQuery(SQL);
-            
-            while (res.next()) {
+            String sql = "SELECT nim, nama FROM t_mahasiswa ORDER BY nama ASC;";
+            ResultSet res = stt.executeQuery(sql);
+            while(res.next()){
                 arrMahasiswa.add(new Mahasiswa(res.getString("nim"), res.getString("nama")));
+                // fungsi ini bertugas menampung isi dari database
             }
-            
             for(int i=0;i<arrMahasiswa.size();i++){
                 combo_nilai_nama.addItem(arrMahasiswa.get(i).getNama());
             }
-            
             res.close();
             stt.close();
-            kon.close();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
-                    JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
+            System.out.println(e.getMessage());
         }
     }
     
-       public void tampil_nim_mahasiswa(){
+    public void tampil_nim(){
         int idx = combo_nilai_nama.getSelectedIndex();
         nama_mahasiswa = (String)combo_nilai_nama.getSelectedItem();
         String data[] = new String[1];
-       
         if(idx>=0){
             try {
-                java.sql.Connection kon = DriverManager.getConnection(database, user, pass);
+                Connection kon = DriverManager.getConnection(database, user, pass);
                 Statement stt = kon.createStatement();
                 String sql = "SELECT nim FROM t_mahasiswa WHERE nama='"+nama_mahasiswa+"'";      
                 ResultSet res = stt.executeQuery(sql);
@@ -232,31 +226,47 @@ public class frm_nilai extends javax.swing.JFrame {
         }
     }
     
-    public void tampil_combo_nama_mk(){
-          try {
-            Class.forName(driver);
-            java.sql.Connection kon = DriverManager.getConnection(
-                    database,
-                    user,
-                    pass);
+    public void tampil_combo_mata_kulah(){
+        try {
+            Connection kon = DriverManager.getConnection(database, user, pass);
             Statement stt = kon.createStatement();
-            String SQL = "select * from t_mata_kuliah";
-            ResultSet res = stt.executeQuery(SQL);
-            
-            while (res.next()) {
-               combo_nilai_nama_mk.addItem(res.getString("nama_mk"));
+            String sql = "SELECT kd_mk, nama_mk FROM t_mata_kuliah ORDER BY nama_mk ASC;";
+            ResultSet res = stt.executeQuery(sql);
+            while(res.next()){
+                arrMataKuliah.add(new MataKuliah(res.getString("kd_mk"), res.getString("nama_mk")));
+                // fungsi ini bertugas menampung isi dari database
+            }
+            for(int i=0;i<arrMataKuliah.size();i++){
+                combo_nilai_nama_mk.addItem(arrMataKuliah.get(i).getNamaMK());
             }
             res.close();
             stt.close();
-            kon.close();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
-                    JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
+            System.out.println(e.getMessage());
         }
     }
-
+    
+    public void tampil_kd_mk(){
+        int idx = combo_nilai_nama_mk.getSelectedIndex();
+        nama_mk = (String)combo_nilai_nama_mk.getSelectedItem();
+        String data[] = new String[1];
+        if(idx>=0){
+            try {
+                Connection kon = DriverManager.getConnection(database, user, pass);
+                Statement stt = kon.createStatement();
+                String sql = "SELECT kd_mk FROM t_mata_kuliah WHERE nama_mk='"+nama_mk+"'";      
+                ResultSet res = stt.executeQuery(sql);
+                while(res.next()){
+                    data[0] = res.getString(1);
+                    txt_nilai_kd_mk.setText(data[0]);
+                }
+                res.close();
+                stt.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -344,6 +354,11 @@ public class frm_nilai extends javax.swing.JFrame {
         lbl_key.setText("Masukkan Kata Kunci");
 
         txt_nilai_key.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
+        txt_nilai_key.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_nilai_keyKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -370,11 +385,22 @@ public class frm_nilai extends javax.swing.JFrame {
         lbl_nilai_nama.setText("Nama");
 
         combo_nilai_nama.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
+        combo_nilai_nama.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                combo_nilai_namaActionPerformed(evt);
+            }
+        });
 
         lbl_nilai_nim.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
         lbl_nilai_nim.setText("NIM");
 
+        txt_nilai_nim.setEditable(false);
         txt_nilai_nim.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
+        txt_nilai_nim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_nilai_nimActionPerformed(evt);
+            }
+        });
 
         lbl_nilai_kehadiran.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
         lbl_nilai_kehadiran.setText("Kehadiran");
@@ -392,6 +418,11 @@ public class frm_nilai extends javax.swing.JFrame {
         lbl_nilai_nama_mk.setText("Nama MK");
 
         combo_nilai_nama_mk.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
+        combo_nilai_nama_mk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                combo_nilai_nama_mkActionPerformed(evt);
+            }
+        });
 
         txt_nilai_kehadiran.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
 
@@ -416,6 +447,7 @@ public class frm_nilai extends javax.swing.JFrame {
         lbl_nilai_angkatan.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
         lbl_nilai_angkatan.setText("Angkatan");
 
+        txt_nilai_kd_mk.setEditable(false);
         txt_nilai_kd_mk.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
 
         txt_nilai_uts.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
@@ -777,6 +809,78 @@ public class frm_nilai extends javax.swing.JFrame {
     private void btn_mata_kuliah_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mata_kuliah_ubahActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_mata_kuliah_ubahActionPerformed
+
+    private void txt_nilai_nimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nilai_nimActionPerformed
+        
+    }//GEN-LAST:event_txt_nilai_nimActionPerformed
+
+    private void combo_nilai_namaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_nilai_namaActionPerformed
+        int idx = combo_nilai_nama.getSelectedIndex();
+        
+        if(arrMahasiswa.size() > 0){
+            nim = arrMahasiswa.get(idx).getNim();
+            tampil_nim();
+        }
+    }//GEN-LAST:event_combo_nilai_namaActionPerformed
+
+    private void combo_nilai_nama_mkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_nilai_nama_mkActionPerformed
+        int idx = combo_nilai_nama_mk.getSelectedIndex();
+        
+        if(arrMataKuliah.size() > 0){
+            kd_mk = arrMataKuliah.get(idx).getNamaMK();
+            tampil_kd_mk();
+        }
+    }//GEN-LAST:event_combo_nilai_nama_mkActionPerformed
+
+    private void txt_nilai_keyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nilai_keyKeyReleased
+        tableModel.setRowCount(0);
+        String keyNilai = txt_nilai_key.getText();
+        try{
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, pass);
+            Statement stt = kon.createStatement();
+            String sql = "SELECT t_mahasiswa.nama, t_mata_kuliah.nama_mk, t_nilai.kehadiran, t_nilai.tugas_satu, t_nilai.tugas_dua, t_nilai.tugas_tiga, t_nilai.uts, t_nilai.uas, t_nilai.nilai, t_nilai.indeks, t_nilai.ket"
+            + "FROM t_nilai "
+            + "JOIN t_mata_kuliah ON t_nilai.kd_mk = t_mata_kuliah.kd_mk "
+            + "JOIN t_mahasiswa ON t_nilai.nim = t_mahasiswa.nim "
+            + "WHERE (t_mahasiswa.nama LIKE '%" + keyNilai + "%') "
+            + "OR (t_mata_kuliah.nama_mk LIKE '%" + keyNilai + "%') "
+            + "OR (t_nilai.kehadiran LIKE '%" + keyNilai + "%') "
+            + "OR (t_nilai.tugas_satu LIKE '%" + keyNilai + "%') "
+            + "OR (t_nilai.tugas_dua LIKE '%" + keyNilai + "%') "
+            + "OR (t_nilai.tugas_tiga LIKE '%" + keyNilai + "%') "
+            + "OR (t_nilai.uts LIKE '%" + keyNilai + "%') "
+            + "OR (t_nilai.uas LIKE '%" + keyNilai + "%') "
+            + "OR (t_nilai.nilai LIKE '%" + keyNilai + "%') "
+            + "OR (t_nilai.indeks LIKE '%" + keyNilai + "%') "
+            + "OR (t_nilai.ket LIKE '%" + keyNilai + "%') "
+            + "ORDER BY t_mahasiswa.nama ASC;";
+            ResultSet res = stt.executeQuery(sql);
+            while(res.next()){
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                data[2] = res.getString(3);
+                data[3] = res.getString(4);
+                data[4] = res.getString(5);
+                data[5] = res.getString(6);
+                data[6] = res.getString(7);
+                data[7] = res.getString(8);
+                data[8] = data[3];
+                data[9] = data[4];
+                data[10] = data[5];
+                data[11] = data[6];
+                data[12] = res.getString(9);
+                data[13] = res.getString(10);
+                data[14] = res.getString(11);
+                tableModel.addRow(data);
+            }
+            res.close();
+            stt.close();
+            kon.close();
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+    }//GEN-LAST:event_txt_nilai_keyKeyReleased
 
     /**
      * @param args the command line arguments
