@@ -87,7 +87,7 @@ public class frm_nilai extends javax.swing.JFrame {
         };
     }
     
-    String data[]=new String[15];
+    String data[]=new String[17];
  
     private void settableload() {
         String stat = "";
@@ -98,29 +98,29 @@ public class frm_nilai extends javax.swing.JFrame {
                     user,
                     pass);
             Statement stt = kon.createStatement();
-            String SQL = "select t_mahasiswa.nama, t_mata_kuliah.nama_mk, t_nilai.kehadiran,\n" +
-                    "t_nilai.tugas_satu, t_nilai.tugas_dua, t_nilai.tugas_tiga, t_nilai.uts, t_nilai.uas, t_nilai.nilai, t_nilai.indeks, t_nilai.ket\n" +
+            String SQL = "select t_mahasiswa.nim, t_mahasiswa.nama, t_mata_kuliah.nama_mk, t_nilai.kehadiran,\n" +
+                    "t_nilai.tugas_satu, t_nilai.tugas_dua, t_nilai.tugas_tiga, t_nilai.uts, t_nilai.uas, t_nilai.nilai_absen, t_nilai.nilai_tugas, t_nilai.nilai_uts, t_nilai.nilai_uas, t_nilai.angkatan, t_nilai.nilai_akhir, t_nilai.indeks, t_nilai.ket\n" +
                     "from t_nilai JOIN t_mata_kuliah ON\n" +
                     "t_nilai.kd_mk = t_mata_kuliah.kd_mk JOIN t_mahasiswa ON\n" +
                     "t_nilai.nim = t_mahasiswa.nim";
             ResultSet res = stt.executeQuery(SQL);
             
             while (res.next()) {
-                data[0] = res.getString(1);
-                data[1] = res.getString(2);
-                data[2] = res.getString(3);
-                data[3] = res.getString(4);
-                data[4] = res.getString(5);
-                data[5] = res.getString(6);
-                data[6] = res.getString(7);
-                data[7] = res.getString(8);
-                data[8] = data[3];
-                data[9] = data[4];
-                data[10] = data[5];
-                data[11] = data[6];
-                data[12] = res.getString(9);
-                data[13] = res.getString(10);
-                data[14] = res.getString(11);
+                data[0] = res.getString(2);
+                data[1] = res.getString(3);
+                data[2] = res.getString(4);
+                data[3] = res.getString(5);
+                data[4] = res.getString(6);
+                data[5] = res.getString(7);
+                data[6] = res.getString(8);
+                data[7] = res.getString(9);
+                data[8] = res.getString(10);
+                data[9] = res.getString(11);
+                data[10] = res.getString(12);
+                data[11] = res.getString(13);
+                data[12] = res.getString(14);
+                data[13] = res.getString(16);
+                data[14] = res.getString(17);
                 tableModel.addRow(data);
             }
             res.close();
@@ -170,12 +170,15 @@ public class frm_nilai extends javax.swing.JFrame {
     int row = 0;
     public void tampil_field(){
         row = tbl_nilai.getSelectedRow();
-        txt_nilai_kehadiran.setText(tableModel.getValueAt(row, 3).toString());
-        txt_nilai_tugas1.setText(tableModel.getValueAt(row, 4).toString());
-        txt_nilai_tugas2.setText(tableModel.getValueAt(row, 5).toString());
-        txt_nilai_tugas3.setText(tableModel.getValueAt(row, 6).toString());
-        txt_nilai_uts.setText(tableModel.getValueAt(row, 7).toString());
-        txt_nilai_uas.setText(tableModel.getValueAt(row, 8).toString());
+        combo_nilai_nama.setSelectedItem(tableModel.getValueAt(row, 0));
+        combo_nilai_nama_mk.setSelectedItem(tableModel.getValueAt(row, 1));
+//        txt_nilai_nim.setText(data[3].toString());
+        txt_nilai_kehadiran.setText(tableModel.getValueAt(row, 2).toString());
+        txt_nilai_tugas1.setText(tableModel.getValueAt(row, 3).toString());
+        txt_nilai_tugas2.setText(tableModel.getValueAt(row, 4).toString());
+        txt_nilai_tugas3.setText(tableModel.getValueAt(row, 5).toString());
+        txt_nilai_uts.setText(tableModel.getValueAt(row, 6).toString());
+        txt_nilai_uas.setText(tableModel.getValueAt(row, 7).toString());
         
         btn_mata_kuliah_simpan.setEnabled(false);
         btn_mata_kuliah_ubah.setEnabled(true);
@@ -486,6 +489,11 @@ public class frm_nilai extends javax.swing.JFrame {
                 btn_mata_kuliah_tambahMouseExited(evt);
             }
         });
+        btn_mata_kuliah_tambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_mata_kuliah_tambahActionPerformed(evt);
+            }
+        });
 
         btn_mata_kuliah_ubah.setBackground(new java.awt.Color(255, 255, 255));
         btn_mata_kuliah_ubah.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
@@ -533,6 +541,11 @@ public class frm_nilai extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn_mata_kuliah_simpanMouseExited(evt);
+            }
+        });
+        btn_mata_kuliah_simpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_mata_kuliah_simpanActionPerformed(evt);
             }
         });
 
@@ -881,6 +894,111 @@ public class frm_nilai extends javax.swing.JFrame {
             System.err.println(e.getMessage());
         }
     }//GEN-LAST:event_txt_nilai_keyKeyReleased
+
+    private void btn_mata_kuliah_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mata_kuliah_simpanActionPerformed
+        // TODO add your handling code here:
+        String data[] = new String[17];
+        String nim = txt_nilai_nim.getText();
+        String kd_mk = txt_nilai_kd_mk.getText();
+        Double kehadiran = Double.parseDouble(txt_nilai_kehadiran.getText());
+        Double tugas_satu = Double.parseDouble(txt_nilai_tugas1.getText());
+        Double tugas_dua = Double.parseDouble(txt_nilai_tugas2.getText());
+        Double tugas_tiga = Double.parseDouble(txt_nilai_tugas3.getText());
+        Double uts = Double.parseDouble(txt_nilai_uts.getText());
+        Double uas = Double.parseDouble(txt_nilai_uas.getText());
+        Integer angkatan = 2021;
+        Double nilai_absen = kehadiran / 14 * 100 * 5 / 100;
+        Double nilai_tugas = tugas_satu + tugas_dua + tugas_tiga;
+        Double nilai_uts = uts * 0.30;
+        Double nilai_uas = uas * 0.40;
+        Double nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
+        String indeks = "";
+        String ket = "";
+               
+        if ((txt_nilai_nim.getText().isEmpty()) || (txt_nilai_kd_mk.getText().isEmpty())){
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, silahkan dilengkapi");
+            txt_nilai_nim.requestFocus();
+        } else {
+            try {
+                Class.forName(driver);
+                java.sql.Connection kon = DriverManager.getConnection(
+                                    database,
+                                    user,
+                                    pass);
+                Statement stt = kon.createStatement();
+                String SQL = "INSERT INTO t_nilai(nim,"
+                                + "kd_mk,"
+                                + "kehadiran,"
+                                + "tugas_satu,"
+                                + "tugas_dua,"
+                                + "tugas_tiga,"
+                                + "uts,"
+                                + "uas,"
+                                + "angkatan,"
+                                + "nilai_absen,"
+                                + "nilai_tugas,"
+                                + "nilai_uts,"
+                                + "nilai_uas,"
+                                + "nilai_akhir,"
+                                + "indeks,"
+                                + "ket) "
+                                + "VALUES "
+                                + "( '"+nim+"',"
+                                + " ' "+kd_mk+" ' ,"
+                                + " ' "+kehadiran+" ' ,"
+                                + " ' "+tugas_satu+" ' ,"
+                                + " ' "+tugas_dua+" ' ,"
+                                + " ' "+tugas_tiga+" ' ,"
+                                + " ' "+uts+" ' ,"
+                                + " ' "+uas+" ' ,"
+                                + " ' "+angkatan+" ' ,"
+                                + " ' "+nilai_absen+" ' ,"
+                                + " ' "+nilai_tugas+" ' ,"
+                                + " ' "+nilai_uts+" ' ,"
+                                + " ' "+nilai_uas+" ' ,"
+                                + " ' "+nilai_akhir+" ' ,"
+                                + " ' "+indeks+" ' ,"
+                                + " ' "+ket+" ' )";
+                
+                stt.executeUpdate(SQL);
+                data[0] = nim;
+                data[1] = kd_mk;
+                data[2] = Double.toString(kehadiran);
+                data[3] = Double.toString(tugas_satu);
+                data[4] = Double.toString(tugas_dua);
+                data[5] = Double.toString(tugas_tiga);
+                data[6] = Double.toString(uts);
+                data[7] = Double.toString(uas);
+                data[8] = Integer.toString(angkatan);
+                data[9] = Double.toString(nilai_absen);
+                data[10] = Double.toString(nilai_tugas);
+                data[11] = Double.toString(nilai_uts);
+                data[12] = Double.toString(nilai_uas);
+                data[13] = Double.toString(nilai_akhir);
+                data[14] = indeks;
+                data[15] = ket;
+                tableModel.insertRow(0, data);
+                stt.close();
+                kon.close();
+                membersihkan_teks();
+                btn_mata_kuliah_simpan.setEnabled(false);
+                nonaktif_teks();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Eror",
+                JOptionPane.INFORMATION_MESSAGE);
+            }    
+        }
+    }//GEN-LAST:event_btn_mata_kuliah_simpanActionPerformed
+
+    private void btn_mata_kuliah_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mata_kuliah_tambahActionPerformed
+        // TODO add your handling code here:
+        membersihkan_teks();
+        txt_nilai_kehadiran.requestFocus();
+        btn_mata_kuliah_simpan.setEnabled(true);
+        btn_mata_kuliah_ubah.setEnabled(false);
+        btn_mata_kuliah_hapus.setEnabled(false);
+        btn_mata_kuliah_batal.setEnabled(false);
+    }//GEN-LAST:event_btn_mata_kuliah_tambahActionPerformed
 
     /**
      * @param args the command line arguments
