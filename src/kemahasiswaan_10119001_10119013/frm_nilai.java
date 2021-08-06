@@ -98,29 +98,29 @@ public class frm_nilai extends javax.swing.JFrame {
                     user,
                     pass);
             Statement stt = kon.createStatement();
-            String SQL = "select t_mahasiswa.nim, t_mahasiswa.nama, t_mata_kuliah.nama_mk, t_nilai.kehadiran,\n" +
-                    "t_nilai.tugas_satu, t_nilai.tugas_dua, t_nilai.tugas_tiga, t_nilai.uts, t_nilai.uas, t_nilai.nilai_absen, t_nilai.nilai_tugas, t_nilai.nilai_uts, t_nilai.nilai_uas, t_nilai.angkatan, t_nilai.nilai_akhir, t_nilai.indeks, t_nilai.ket\n" +
+            String SQL = "select t_mahasiswa.nama, t_mata_kuliah.nama_mk, t_nilai.kehadiran,\n" +
+                    "t_nilai.tugas_satu, t_nilai.tugas_dua, t_nilai.tugas_tiga, t_nilai.uts, t_nilai.uas, t_nilai.nilai_absen, t_nilai.nilai_tugas, t_nilai.nilai_uts, t_nilai.nilai_uas, t_nilai.nilai_akhir, t_nilai.indeks, t_nilai.ket\n" +
                     "from t_nilai JOIN t_mata_kuliah ON\n" +
                     "t_nilai.kd_mk = t_mata_kuliah.kd_mk JOIN t_mahasiswa ON\n" +
                     "t_nilai.nim = t_mahasiswa.nim";
             ResultSet res = stt.executeQuery(SQL);
             
             while (res.next()) {
-                data[0] = res.getString(2);
-                data[1] = res.getString(3);
-                data[2] = res.getString(4);
-                data[3] = res.getString(5);
-                data[4] = res.getString(6);
-                data[5] = res.getString(7);
-                data[6] = res.getString(8);
-                data[7] = res.getString(9);
-                data[8] = res.getString(10);
-                data[9] = res.getString(11);
-                data[10] = res.getString(12);
-                data[11] = res.getString(13);
-                data[12] = res.getString(14);
-                data[13] = res.getString(16);
-                data[14] = res.getString(17);
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                data[2] = res.getString(3);
+                data[3] = res.getString(4);
+                data[4] = res.getString(5);
+                data[5] = res.getString(6);
+                data[6] = res.getString(7);
+                data[7] = res.getString(8);
+                data[8] = res.getString(9);
+                data[9] = res.getString(10);
+                data[10] = res.getString(11);
+                data[11] = res.getString(12);
+                data[12] = res.getString(13);
+                data[13] = res.getString(14);
+                data[14] = res.getString(15);
                 tableModel.addRow(data);
             }
             res.close();
@@ -856,27 +856,21 @@ public class frm_nilai extends javax.swing.JFrame {
 
     private void txt_nilai_keyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nilai_keyKeyReleased
         tableModel.setRowCount(0);
-        String keyNilai = txt_nilai_key.getText();
         try{
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
             Statement stt = kon.createStatement();
-            String sql = "SELECT t_mahasiswa.nama, t_mata_kuliah.nama_mk, t_nilai.kehadiran, t_nilai.tugas_satu, t_nilai.tugas_dua, t_nilai.tugas_tiga, t_nilai.uts, t_nilai.uas, t_nilai.nilai, t_nilai.indeks, t_nilai.ket"
-            + "FROM t_nilai "
-            + "JOIN t_mata_kuliah ON t_nilai.kd_mk = t_mata_kuliah.kd_mk "
-            + "JOIN t_mahasiswa ON t_nilai.nim = t_mahasiswa.nim "
-            + "WHERE (t_mahasiswa.nama LIKE '%" + keyNilai + "%') "
-            + "OR (t_mata_kuliah.nama_mk LIKE '%" + keyNilai + "%') "
-            + "OR (t_nilai.kehadiran LIKE '%" + keyNilai + "%') "
-            + "OR (t_nilai.tugas_satu LIKE '%" + keyNilai + "%') "
-            + "OR (t_nilai.tugas_dua LIKE '%" + keyNilai + "%') "
-            + "OR (t_nilai.tugas_tiga LIKE '%" + keyNilai + "%') "
-            + "OR (t_nilai.uts LIKE '%" + keyNilai + "%') "
-            + "OR (t_nilai.uas LIKE '%" + keyNilai + "%') "
-            + "OR (t_nilai.nilai LIKE '%" + keyNilai + "%') "
-            + "OR (t_nilai.indeks LIKE '%" + keyNilai + "%') "
-            + "OR (t_nilai.ket LIKE '%" + keyNilai + "%') "
-            + "ORDER BY t_mahasiswa.nama ASC;";
+            String sql = "SELECT t_mahasiswa.nama, t_mata_kuliah.nama_mk, t_nilai.kehadiran, t_nilai.tugas_satu, t_nilai.tugas_dua, t_nilai.tugas_tiga, t_nilai.uts, t_nilai.uas, t_nilai.nilai_absen, t_nilai.nilai_tugas, t_nilai.nilai_uts, t_nilai.nilai_uas, t_nilai.nilai_akhir, t_nilai.indeks, t_nilai.ket"
+                        + "FROM t_nilai "
+                        + "JOIN t_mahasiswa ON t_nilai.nim = t_mahasiswa.nim "
+                        + "JOIN t_mata_kuliah ON t_nilai.kd_mk = t_mata_kuliah.kd_mk "
+                        + "WHERE (t_mahasiswa.nama LIKE '%" + txt_nilai_key.getText() + "%') "
+                        + "OR (t_mahasiswa.nim LIKE '%" + txt_nilai_key.getText() + "%') "
+                        + "OR (t_mata_kuliah.kd_mk LIKE '%" + txt_nilai_key.getText() + "%') "
+                        + "OR (t_mata_kuliah.nama_mk LIKE '%" + txt_nilai_key.getText() + "%') "
+                        + "OR (t_nilai.indeks LIKE '%" + txt_nilai_key.getText() + "%') "
+                        + "OR (t_nilai.ket LIKE '%" + txt_nilai_key.getText() + "%') "
+                        + "ORDER BY t_mahasiswa.nama ASC;";
             ResultSet res = stt.executeQuery(sql);
             while(res.next()){
                 data[0] = res.getString(1);
@@ -887,13 +881,13 @@ public class frm_nilai extends javax.swing.JFrame {
                 data[5] = res.getString(6);
                 data[6] = res.getString(7);
                 data[7] = res.getString(8);
-                data[8] = data[3];
-                data[9] = data[4];
-                data[10] = data[5];
-                data[11] = data[6];
-                data[12] = res.getString(9);
-                data[13] = res.getString(10);
-                data[14] = res.getString(11);
+                data[8] = res.getString(9);
+                data[9] = res.getString(10);
+                data[10] = res.getString(11);
+                data[11] = res.getString(12);
+                data[12] = res.getString(13);
+                data[13] = res.getString(14);
+                data[14] = res.getString(15);
                 tableModel.addRow(data);
             }
             res.close();
@@ -919,10 +913,11 @@ public class frm_nilai extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, silahkan dilengkapi", "Error!", JOptionPane.CANCEL_OPTION);
         } else {
             //hitung nilai_absen
-            double nilai_absen = ((jmlhPertemuan/14)*100*5)/100;
+            double nilai_absen = (jmlhPertemuan/14)*5;
 
             //hitung nilai_tugas
-            double nilai_tugas = ((tugas_satu + tugas_dua + tugas_tiga)/3)*(25/100);
+            double rataTugas = (tugas_satu + tugas_dua + tugas_tiga)/3;
+            double nilai_tugas = rataTugas *0.25;
 
             //hitung nilai_uts
             double nilai_uts = uts * 0.30;
@@ -975,22 +970,22 @@ public class frm_nilai extends javax.swing.JFrame {
                 String SQL = "INSERT INTO t_nilai"
                                 + "(nim, kd_mk, kehadiran, tugas_satu, tugas_dua, tugas_tiga, uts, uas, angkatan, nilai_absen, nilai_tugas, nilai_uts, nilai_uas, nilai_akhir, indeks, ket)"
                                 + "VALUES "
-                                + "( '"+txt_nilai_nim+"',"
-                                + " ' "+txt_nilai_kd_mk.getText()+" ' ,"
-                                + " ' "+jmlhPertemuan+" ' ,"
-                                + " ' "+tugas_satu+" ' ,"
-                                + " ' "+tugas_dua+" ' ,"
-                                + " ' "+tugas_tiga+" ' ,"
-                                + " ' "+uts+" ' ,"
-                                + " ' "+uas+" ' ,"
-                                + " ' "+angkatan+" ' ,"
-                                + " ' "+nilai_absen+" ' ,"
-                                + " ' "+nilai_tugas+" ' ,"
-                                + " ' "+nilai_uts+" ' ,"
-                                + " ' "+nilai_uas+" ' ,"
-                                + " ' "+nilai_akhir+" ' ,"
-                                + " ' "+indeks+" ' ,"
-                                + " ' "+ket+" ' )";
+                                + "('"+txt_nilai_nim.getText()+"',"
+                                + " '"+txt_nilai_kd_mk.getText()+"' ,"
+                                + " '"+jmlhPertemuan+"' ,"
+                                + " '"+tugas_satu+"' ,"
+                                + " '"+tugas_dua+"' ,"
+                                + " '"+tugas_tiga+"' ,"
+                                + " '"+uts+"' ,"
+                                + " '"+uas+"' ,"
+                                + " '"+angkatan+"' ,"
+                                + " '"+nilai_absen+"' ,"
+                                + " '"+nilai_tugas+"' ,"
+                                + " '"+nilai_uts+"' ,"
+                                + " '"+nilai_uas+"' ,"
+                                + " '"+nilai_akhir+"' ,"
+                                + " '"+indeks+"' ,"
+                                + " '"+ket+"' )";
                 
                 stt.executeUpdate(SQL);
                 data[0] = combo_nilai_nama.getSelectedItem().toString();
@@ -1001,14 +996,13 @@ public class frm_nilai extends javax.swing.JFrame {
                 data[5] = String.valueOf(tugas_tiga);
                 data[6] = String.valueOf(uts);
                 data[7] = String.valueOf(uas);
-                data[8] = String.valueOf(angkatan);
-                data[9] = String.valueOf(nilai_absen);
-                data[10] = String.valueOf(nilai_tugas);
-                data[11] = String.valueOf(nilai_uts);
-                data[12] = String.valueOf(nilai_uas);
-                data[13] = String.valueOf(nilai_akhir);
-                data[14] = indeks;
-                data[15] = ket;
+                data[8] = String.valueOf(nilai_absen);
+                data[9] = String.valueOf(nilai_tugas);
+                data[10] = String.valueOf(nilai_uts);
+                data[11] = String.valueOf(nilai_uas);
+                data[12] = String.valueOf(nilai_akhir);
+                data[13] = indeks;
+                data[14] = ket;
                 tableModel.addRow(data);
                 stt.close();
                 kon.close();
