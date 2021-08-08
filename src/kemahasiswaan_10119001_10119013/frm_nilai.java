@@ -830,6 +830,118 @@ public class frm_nilai extends javax.swing.JFrame {
 
     private void btn_nilai_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nilai_ubahActionPerformed
         // TODO add your handling code here:
+        double jmlhPertemuan = Double.valueOf(txt_nilai_kehadiran.getText());
+        int angkatan = 2021;
+        double kehadiran = Double.valueOf(txt_nilai_kehadiran.getText());
+        double tugas_satu = Double.valueOf(txt_nilai_tugas1.getText());
+        double tugas_dua = Double.valueOf(txt_nilai_tugas2.getText());
+        double tugas_tiga = Double.valueOf(txt_nilai_tugas3.getText());
+        double uts = Double.valueOf(txt_nilai_uts.getText());
+        double uas = Double.valueOf(txt_nilai_uas.getText());
+       
+        if ((kd_mk.isEmpty()) | (nama_mk.isEmpty())){
+            JOptionPane.showMessageDialog(null, "data tidak boleh kosong");
+        } else {
+             //hitung nilai_absen
+            double nilai_absen = (jmlhPertemuan/14)*5;
+
+            //hitung nilai_tugas
+            double rataTugas = (tugas_satu + tugas_dua + tugas_tiga)/3;
+            double nilai_tugas = rataTugas *0.25;
+
+            //hitung nilai_uts
+            double nilai_uts = uts * 0.30;
+
+            //hitung nilai_uas
+            double nilai_uas = uas * 0.40;
+
+            //hitung nilai_akhir
+            double nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
+
+            //cari nilai indeks dan keterangan
+            String indeks = "";
+            String ket = "";
+            if((nilai_akhir >= 80) && (nilai_akhir <=100)){
+                indeks = "A";
+                if(jmlhPertemuan<11){
+                    ket = "Tidak Lulus";
+                }else{
+                    ket = "Lulus";
+                }
+            }if((nilai_akhir >= 68) && (nilai_akhir <80)){
+                indeks = "B";
+                if(jmlhPertemuan<11){
+                    ket = "Tidak Lulus";
+                }else{
+                    ket = "Lulus";
+                }
+            }if((nilai_akhir >= 56) && (nilai_akhir <68)){
+                indeks = "C";
+                if(jmlhPertemuan<11){
+                    ket = "Tidak Lulus";
+                }else{
+                    ket = "Lulus";
+                }
+            }if((nilai_akhir >= 45) && (nilai_akhir <56)){
+                indeks = "D";
+                ket = "Tidak Lulus";
+            }if((nilai_akhir >= 0) && (nilai_akhir <45)){
+                indeks = "E";
+                ket = "Tidak Lulus";
+            }
+            try {
+                Class.forName(driver);
+                java.sql.Connection kon = DriverManager.getConnection(
+                                    database,
+                                    user,
+                                    pass);
+                Statement stt = kon.createStatement();
+                String SQL = "UPDATE t_nilai "
+                                + "SET "
+                                + "nim = '" + txt_nilai_nim.getText() + "', "
+                                + "kd_mk = '" + txt_nilai_kd_mk.getText() + "', "
+                                + "kehadiran = '" + kehadiran + "', "
+                                + "tugas_satu = '" + tugas_satu + "', "
+                                + "tugas_dua = '" + tugas_dua + "', "
+                                + "tugas_tiga = '" + tugas_tiga + "', "
+                                + "uts = '" + uts + "', "
+                                + "uas = '" + uas + "', "
+                                + "angkatan = '" + angkatan + "', "
+                                + "nilai_absen = '" + nilai_absen + "', "
+                                + "nilai_tugas = '" + nilai_tugas + "', "
+                                + "nilai_uts = '" + nilai_uts + "', "
+                                + "nilai_uas = '" + nilai_uas + "', "
+                                + "nilai_akhir = '" + nilai_akhir + "', "
+                                + "indeks = '" + indeks + "', "
+                                + "ket = '" + ket + "' "           
+                                + "WHERE nim = '" + txt_nilai_nim.getText() +"'";
+                stt.executeUpdate(SQL);
+                data[0] = combo_nilai_nama.getSelectedItem().toString();
+                data[1] = combo_nilai_nama_mk.getSelectedItem().toString();
+                data[2] = String.valueOf(jmlhPertemuan);
+                data[3] = String.valueOf(tugas_satu);
+                data[4] = String.valueOf(tugas_dua);
+                data[5] = String.valueOf(tugas_tiga);
+                data[6] = String.valueOf(uts);
+                data[7] = String.valueOf(uas);
+                data[8] = String.valueOf(nilai_absen);
+                data[9] = String.valueOf(nilai_tugas);
+                data[10] = String.valueOf(nilai_uts);
+                data[11] = String.valueOf(nilai_uas);
+                data[12] = String.valueOf(nilai_akhir);
+                data[13] = indeks;
+                data[14] = ket;
+                tableModel.removeRow(row);
+                tableModel.insertRow(row, data);
+                stt.close();
+                kon.close();
+                membersihkan_teks();
+                btn_nilai_simpan.setEnabled(false);
+                nonaktif_teks();
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_btn_nilai_ubahActionPerformed
 
     private void txt_nilai_nimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nilai_nimActionPerformed
