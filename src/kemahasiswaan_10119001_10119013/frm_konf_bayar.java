@@ -91,6 +91,9 @@ public class frm_konf_bayar extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("KONFIRMASI PEMBAYARAN");
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -471,29 +474,34 @@ public class frm_konf_bayar extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void btn_simpan_konfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_simpan_konfActionPerformed
-        try{
-            Connection kon = DriverManager.getConnection(database, user, pass);
-            Statement stt = kon.createStatement();
-            String sql = "UPDATE t_struk "
-                    + "SET WaktuStruk = now(), "
-                    + "TotalBayar = '"+txt_total_bayar_konf.getText()+"' "
-                    + "WHERE NoStruk = '"+txt_no_struk_konf.getText()+"';";
-            stt.executeUpdate(sql);
-            stt.close();
-            kon.close();
-            tambah_point_member();
-            frm_kasus k = new frm_kasus();
-            k.setVisible(true);
-            dispose();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Gagal Membayar!", JOptionPane.INFORMATION_MESSAGE);
+        int simpan = JOptionPane.showConfirmDialog(null,"Yakin ingin melunasi pembayaran?", "Confirmation",JOptionPane.YES_NO_OPTION);
+        
+        if(simpan==0){
+            try{
+                Connection kon = DriverManager.getConnection(database, user, pass);
+                Statement stt = kon.createStatement();
+                String sql = "UPDATE t_struk "
+                        + "SET WaktuStruk = now(), "
+                        + "TotalBayar = '"+txt_total_bayar_konf.getText()+"' "
+                        + "WHERE NoStruk = '"+txt_no_struk_konf.getText()+"';";
+                stt.executeUpdate(sql);
+                stt.close();
+                kon.close();
+                tambah_point_member();
+                frm_kasus k = new frm_kasus();
+                k.setVisible(true);
+                dispose();
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Gagal Membayar!", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btn_simpan_konfActionPerformed
 
     private void btn_batal_konfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_batal_konfActionPerformed
-        hide();
+        int batal = JOptionPane.showConfirmDialog(null,"Ingin membatalkan pembayaran?", "Confirmation",JOptionPane.YES_NO_OPTION);
         frm_kasus k = new frm_kasus();
         k.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btn_batal_konfActionPerformed
 
     private void txt_point_konfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_point_konfActionPerformed
@@ -511,6 +519,12 @@ public class frm_konf_bayar extends javax.swing.JFrame {
     private void txt_nama_member_konfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nama_member_konfActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_nama_member_konfActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        frm_kasus k = new frm_kasus();
+        k.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

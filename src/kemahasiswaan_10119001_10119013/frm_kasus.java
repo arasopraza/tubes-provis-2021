@@ -977,7 +977,6 @@ public class frm_kasus extends javax.swing.JFrame {
             }
             konf.txt_id_member_konf.setText(getIdMember);
             konf.txt_nama_member_konf.setText(getNamaMember);
-            
             konf.setVisible(true);
             hide();
         }
@@ -1016,6 +1015,7 @@ public class frm_kasus extends javax.swing.JFrame {
             IdBarang = arrProduk.get(idx).getIdBarang();
             tampil_id_produk();
             tampil_harga_satuan();
+            txt_jumlah.setEnabled(true);
         }
         
         txt_jumlah.setText("");
@@ -1136,7 +1136,7 @@ public class frm_kasus extends javax.swing.JFrame {
             stt.executeUpdate(sql);
             txt_no_struk.setText(String.valueOf(htgStruk));
             txt_id_produk.setText("");
-            txt_jumlah.setEnabled(true);
+            txt_jumlah.setEnabled(false);
             txt_harga_satuan.setText("");
             btn_tambah_produk.setEnabled(true);
             txt_total_bayar.setText("");
