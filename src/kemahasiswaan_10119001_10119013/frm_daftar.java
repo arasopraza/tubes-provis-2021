@@ -52,7 +52,7 @@ public class frm_daftar extends javax.swing.JFrame {
         btn_back_login = new javax.swing.JButton();
         btn_daftar_akun = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(209, 209, 229));
 
@@ -171,7 +171,8 @@ public class frm_daftar extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        setSize(new java.awt.Dimension(554, 329));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_daftar_akunMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_daftar_akunMouseEntered
