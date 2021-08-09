@@ -97,7 +97,18 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
                     user,
                     pass);
             Statement stt = kon.createStatement();
-            String SQL = "SELECT * FROM t_nilai_akhir";
+            String SQL = "SELECT t_mata_kuliah.nama_mk, t_nilai_akhir.persen_absen, "
+                    + "t_nilai_akhir.persen_tugas, t_nilai_akhir.persen_uts, "
+                    + "t_nilai_akhir.persen_uas, t_nilai_akhir.kehadiran, "
+                    + "t_nilai_akhir.tugas_satu, t_nilai_akhir.tugas_dua, "
+                    + "t_nilai_akhir.tugas_tiga, t_nilai_akhir.uts, "
+                    + "t_nilai_akhir.uas, t_nilai_akhir.nilai_absen, "
+                    + "t_nilai_akhir.nilai_tugas, t_nilai_akhir.nilai_uts, "
+                    + "t_nilai_akhir.nilai_uas, t_nilai_akhir.nilai_akhir, "
+                    + "t_nilai_akhir.indeks, t_nilai_akhir.ket "
+                    + "FROM t_nilai_akhir "
+                    + "JOIN t_mata_kuliah "
+                    + "ON t_nilai_akhir.kd_mk = t_mata_kuliah.kd_mk;";
             ResultSet res = stt.executeQuery(SQL);
             
             while (res.next()) {
@@ -119,8 +130,6 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
                 data[15] = res.getString(16);
                 data[16] = res.getString(17);
                 data[17] = res.getString(18);
-                data[18] = res.getString(19);
-                data[19] = res.getString(20);
                 tableModel.addRow(data);
             }
             res.close();
@@ -299,6 +308,9 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SIMULASI NILAI AKHIR");
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
@@ -334,10 +346,16 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
         lbl_nilai_akhir_nama_mk.setText("Nama MK");
 
         combo_nilai_akhir_nama_mk.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
+        combo_nilai_akhir_nama_mk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                combo_nilai_akhir_nama_mkActionPerformed(evt);
+            }
+        });
 
         lbl_nilai_akhir_kd_mk.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
         lbl_nilai_akhir_kd_mk.setText("Kode MK");
 
+        txt_nilai_akhir_kd_mk.setEditable(false);
         txt_nilai_akhir_kd_mk.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
 
         lbl_nilai_akhir_persen_absen.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
@@ -745,6 +763,16 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
         btn_nilai_akhir_hapus.setEnabled(false);
         btn_nilai_akhir_simpan.setEnabled(true);
         btn_nilai_akhir_batal.setEnabled(true);
+        txt_nilai_akhir_persen_absen.setEnabled(true);
+        txt_nilai_akhir_persen_tugas.setEnabled(true);
+        txt_nilai_akhir_persen_uts.setEnabled(true);
+        txt_nilai_akhir_persen_uas.setEnabled(true);
+        txt_nilai_akhir_kehadiran.setEnabled(true);
+        txt_nilai_akhir_tugas1.setEnabled(true);
+        txt_nilai_akhir_tugas2.setEnabled(true);
+        txt_nilai_akhir_tugas3.setEnabled(true);
+        txt_nilai_akhir_uts.setEnabled(true);
+        txt_nilai_akhir_uas.setEnabled(true);
         tampil_kd_mk();
     }//GEN-LAST:event_btn_nilai_akhir_tambahActionPerformed
 
@@ -824,7 +852,7 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
                 String SQL = "INSERT INTO t_nilai_akhir"
                                 + "(kd_mk, kehadiran, tugas_satu, tugas_dua, tugas_tiga, uts, uas, nilai_absen, nilai_tugas, nilai_uts, nilai_uas, nilai_akhir, indeks, ket, persen_absen, persen_tugas, persen_uts, persen_uas)"
                                 + "VALUES "
-                                + " '"+txt_nilai_akhir_kd_mk.getText()+"' ,"
+                                + "( '"+txt_nilai_akhir_kd_mk.getText()+"' ,"
                                 + " '"+jmlhPertemuan+"' ,"
                                 + " '"+tugas_satu+"' ,"
                                 + " '"+tugas_dua+"' ,"
@@ -843,29 +871,30 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
                                 + " '"+persen_uts+"' ,"
                                 + " '"+persen_uas+"' )";
                 stt.executeUpdate(SQL);
-                data[1] = combo_nilai_akhir_nama_mk.getSelectedItem().toString();
-                data[2] = String.valueOf(persen_absen);
-                data[3] = String.valueOf(persen_tugas);
-                data[4] = String.valueOf(persen_uts);
-                data[5] = String.valueOf(persen_uas);
-                data[6] = String.valueOf(jmlhPertemuan);
-                data[7] = String.valueOf(tugas_satu);
-                data[8] = String.valueOf(tugas_dua);
-                data[9] = String.valueOf(tugas_tiga);
-                data[10] = String.valueOf(uts);
-                data[11] = String.valueOf(uas);
-                data[12] = String.valueOf(nilai_absen);
-                data[13] = String.valueOf(nilai_tugas);
-                data[14] = String.valueOf(nilai_uts);
-                data[15] = String.valueOf(nilai_uas);
-                data[16] = String.valueOf(nilai_akhir);
-                data[17] = indeks;
-                data[18] = ket;
+                data[0] = combo_nilai_akhir_nama_mk.getSelectedItem().toString();
+                data[1] = String.valueOf(persen_absen);
+                data[2] = String.valueOf(persen_tugas);
+                data[3] = String.valueOf(persen_uts);
+                data[4] = String.valueOf(persen_uas);
+                data[5] = String.valueOf(jmlhPertemuan);
+                data[6] = String.valueOf(tugas_satu);
+                data[7] = String.valueOf(tugas_dua);
+                data[8] = String.valueOf(tugas_tiga);
+                data[9] = String.valueOf(uts);
+                data[10] = String.valueOf(uas);
+                data[11] = String.valueOf(nilai_absen);
+                data[12] = String.valueOf(nilai_tugas);
+                data[13] = String.valueOf(nilai_uts);
+                data[14] = String.valueOf(nilai_uas);
+                data[15] = String.valueOf(nilai_akhir);
+                data[16] = indeks;
+                data[17] = ket;
                 tableModel.addRow(data);
                 stt.close();
                 kon.close();
                 membersihkan_teks();
                 btn_nilai_akhir_simpan.setEnabled(false);
+                btn_nilai_akhir_tambah.setEnabled(true);
                 nonaktif_teks();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Eror",
@@ -873,6 +902,32 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
             }    
         }
     }//GEN-LAST:event_btn_nilai_akhir_simpanActionPerformed
+
+    private void combo_nilai_akhir_nama_mkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_nilai_akhir_nama_mkActionPerformed
+        int idx = combo_nilai_akhir_nama_mk.getSelectedIndex();
+        
+        if(arrMataKuliah.size() > 0){
+            kd_mk = arrMataKuliah.get(idx).getNamaMK();
+            tampil_kd_mk();
+        }
+    }//GEN-LAST:event_combo_nilai_akhir_nama_mkActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        txt_nilai_akhir_persen_absen.setEnabled(false);
+        txt_nilai_akhir_persen_tugas.setEnabled(false);
+        txt_nilai_akhir_persen_uts.setEnabled(false);
+        txt_nilai_akhir_persen_uas.setEnabled(false);
+        txt_nilai_akhir_kehadiran.setEnabled(false);
+        txt_nilai_akhir_tugas1.setEnabled(false);
+        txt_nilai_akhir_tugas2.setEnabled(false);
+        txt_nilai_akhir_tugas3.setEnabled(false);
+        txt_nilai_akhir_uts.setEnabled(false);
+        txt_nilai_akhir_uas.setEnabled(false);
+        btn_nilai_akhir_ubah.setEnabled(false);
+        btn_nilai_akhir_hapus.setEnabled(false);
+        btn_nilai_akhir_simpan.setEnabled(false);
+        btn_nilai_akhir_batal.setEnabled(false);
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
