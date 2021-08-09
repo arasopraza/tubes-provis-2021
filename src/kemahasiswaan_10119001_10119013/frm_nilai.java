@@ -968,21 +968,29 @@ public class frm_nilai extends javax.swing.JFrame {
 
     private void txt_nilai_keyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nilai_keyKeyReleased
         tableModel.setRowCount(0);
+        String nilaiKey = txt_nilai_key.getText(); 
+        String data[] = new String[15];
         try{
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
             Statement stt = kon.createStatement();
-            String sql = "SELECT t_mahasiswa.nama, t_mata_kuliah.nama_mk, t_nilai.kehadiran, t_nilai.tugas_satu, t_nilai.tugas_dua, t_nilai.tugas_tiga, t_nilai.uts, t_nilai.uas, t_nilai.nilai_absen, t_nilai.nilai_tugas, t_nilai.nilai_uts, t_nilai.nilai_uas, t_nilai.nilai_akhir, t_nilai.indeks, t_nilai.ket"
-                        + "FROM t_nilai "
-                        + "JOIN t_mahasiswa ON t_nilai.nim = t_mahasiswa.nim "
-                        + "JOIN t_mata_kuliah ON t_nilai.kd_mk = t_mata_kuliah.kd_mk "
-                        + "WHERE (t_mahasiswa.nama LIKE '%" + txt_nilai_key.getText() + "%') "
-                        + "OR (t_mahasiswa.nim LIKE '%" + txt_nilai_key.getText() + "%') "
-                        + "OR (t_mata_kuliah.kd_mk LIKE '%" + txt_nilai_key.getText() + "%') "
-                        + "OR (t_mata_kuliah.nama_mk LIKE '%" + txt_nilai_key.getText() + "%') "
-                        + "OR (t_nilai.indeks LIKE '%" + txt_nilai_key.getText() + "%') "
-                        + "OR (t_nilai.ket LIKE '%" + txt_nilai_key.getText() + "%') "
-                        + "ORDER BY t_mahasiswa.nama ASC;";
+            String sql = "SELECT t_mahasiswa.nama, t_mata_kuliah.nama_mk, t_nilai.kehadiran, "
+                    + "t_nilai.tugas_satu, t_nilai.tugas_dua, t_nilai.tugas_tiga, "
+                    + "t_nilai.uts, t_nilai.uas, t_nilai.nilai_absen, "
+                    + "t_nilai.nilai_tugas, t_nilai.nilai_uts, t_nilai.nilai_uas, "
+                    + "t_nilai.nilai_akhir, t_nilai.indeks, t_nilai.ket "
+                    + "FROM t_nilai "
+                    + "JOIN t_mahasiswa "
+                    + "ON t_nilai.nim = t_mahasiswa.nim "
+                    + "JOIN t_mata_kuliah "
+                    + "ON t_nilai.kd_mk = t_mata_kuliah.kd_mk "
+                    + "WHERE (t_mahasiswa.nama LIKE '%"+nilaiKey+"%') "
+                    + "OR (t_mahasiswa.nim LIKE '%"+nilaiKey+"%') "
+                    + "OR (t_mata_kuliah.nama_mk LIKE '%"+nilaiKey+"%') "
+                    + "OR (t_mata_kuliah.kd_mk LIKE '%"+nilaiKey+"%') "
+                    + "OR (t_nilai.indeks LIKE '%"+nilaiKey+"%') "
+                    + "OR (t_nilai.ket LIKE '%"+nilaiKey+"%') "
+                    + "ORDER BY t_mahasiswa.nama ASC";
             ResultSet res = stt.executeQuery(sql);
             while(res.next()){
                 data[0] = res.getString(1);

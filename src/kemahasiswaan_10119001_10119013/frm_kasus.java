@@ -620,7 +620,7 @@ public class frm_kasus extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1334, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -779,11 +779,11 @@ public class frm_kasus extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1334, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE)
         );
 
         setBounds(0, 0, 1350, 730);
@@ -977,7 +977,6 @@ public class frm_kasus extends javax.swing.JFrame {
             }
             konf.txt_id_member_konf.setText(getIdMember);
             konf.txt_nama_member_konf.setText(getNamaMember);
-            
             konf.setVisible(true);
             hide();
         }
@@ -1016,6 +1015,7 @@ public class frm_kasus extends javax.swing.JFrame {
             IdBarang = arrProduk.get(idx).getIdBarang();
             tampil_id_produk();
             tampil_harga_satuan();
+            txt_jumlah.setEnabled(true);
         }
         
         txt_jumlah.setText("");
@@ -1136,7 +1136,7 @@ public class frm_kasus extends javax.swing.JFrame {
             stt.executeUpdate(sql);
             txt_no_struk.setText(String.valueOf(htgStruk));
             txt_id_produk.setText("");
-            txt_jumlah.setEnabled(true);
+            txt_jumlah.setEnabled(false);
             txt_harga_satuan.setText("");
             btn_tambah_produk.setEnabled(true);
             txt_total_bayar.setText("");
