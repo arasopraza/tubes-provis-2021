@@ -1029,7 +1029,7 @@ public class frm_nilai extends javax.swing.JFrame {
         double uts = Double.valueOf(txt_nilai_uts.getText());
         double uas = Double.valueOf(txt_nilai_uas.getText());
         
-        if (("".equals(txt_nilai_kehadiran.getText())) || ("".equals(txt_nilai_tugas1.getText())) || ("".equals(txt_nilai_tugas2.getText())) || ("".equals(txt_nilai_tugas3.getText())) || ("".equals(txt_nilai_uts.getText())) || ("".equals(txt_nilai_uas.getText()))){
+        if((txt_nilai_kehadiran.getText().isEmpty()) || ((txt_nilai_tugas1.getText().isEmpty())) || ((txt_nilai_tugas2.getText().isEmpty())) || ((txt_nilai_tugas3.getText().isEmpty())) || ((txt_nilai_uts.getText().isEmpty())) || ((txt_nilai_uas.getText().isEmpty()))){
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, silahkan dilengkapi", "Error!", JOptionPane.CANCEL_OPTION);
         } else {
             //hitung nilai_absen
