@@ -816,8 +816,8 @@ public class frm_nilai extends javax.swing.JFrame {
                                     pass);
              Statement stt = kon.createStatement();
              String SQL = "DELETE FROM t_nilai "
-                                    + "WHERE "
-                                + "nim = '"+ txt_nilai_nim.getText()+"'";
+                     + "WHERE nim = '"+txt_nilai_nim.getText()+"' "
+                     + "AND kd_mk = '"+txt_nilai_kd_mk.getText()+"';";
                 stt.executeUpdate(SQL);
                 tableModel.removeRow(row);
                 stt.close();
@@ -1029,9 +1029,13 @@ public class frm_nilai extends javax.swing.JFrame {
         double uts = Double.valueOf(txt_nilai_uts.getText());
         double uas = Double.valueOf(txt_nilai_uas.getText());
         
-        if((txt_nilai_kehadiran.getText().isEmpty()) || ((txt_nilai_tugas1.getText().isEmpty())) || ((txt_nilai_tugas2.getText().isEmpty())) || ((txt_nilai_tugas3.getText().isEmpty())) || ((txt_nilai_uts.getText().isEmpty())) || ((txt_nilai_uas.getText().isEmpty()))){
+        if((txt_nilai_kehadiran.getText().isEmpty()) || (txt_nilai_tugas1.getText().isEmpty())){
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, silahkan dilengkapi", "Error!", JOptionPane.CANCEL_OPTION);
-        } else {
+        } else if((txt_nilai_tugas2.getText().isEmpty()) || (txt_nilai_tugas2.getText().isEmpty())){
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, silahkan dilengkapi", "Error!", JOptionPane.CANCEL_OPTION);
+        }else if((txt_nilai_tugas3.getText().isEmpty()) || (txt_nilai_uts.getText().isEmpty()) || (txt_nilai_uas.getText().isEmpty())){
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, silahkan dilengkapi", "Error!", JOptionPane.CANCEL_OPTION);
+        }else {
             //hitung nilai_absen
             double nilai_absen = (jmlhPertemuan/14)*5;
 
@@ -1128,6 +1132,7 @@ public class frm_nilai extends javax.swing.JFrame {
                 kon.close();
                 membersihkan_teks();
                 btn_nilai_simpan.setEnabled(false);
+                btn_nilai_tambah.setEnabled(true);
                 nonaktif_teks();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Eror",
