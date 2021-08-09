@@ -53,6 +53,11 @@ public class frm_daftar extends javax.swing.JFrame {
         btn_daftar_akun = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(209, 209, 229));
 
@@ -218,6 +223,11 @@ public class frm_daftar extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Gagal Mendaftar!", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btn_daftar_akunActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        frm_login l = new frm_login();
+        l.setVisible(true);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
