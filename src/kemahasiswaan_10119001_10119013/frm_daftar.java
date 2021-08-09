@@ -47,12 +47,13 @@ public class frm_daftar extends javax.swing.JFrame {
         lbl_daftar_password = new javax.swing.JLabel();
         lbl_daftar_nama = new javax.swing.JLabel();
         txt_daftar_username = new javax.swing.JTextField();
-        txt_daftar_password = new javax.swing.JTextField();
         txt_daftar_nama = new javax.swing.JTextField();
         btn_back_login = new javax.swing.JButton();
         btn_daftar_akun = new javax.swing.JButton();
+        txt_daftar_password = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Daftar Akun");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -74,8 +75,6 @@ public class frm_daftar extends javax.swing.JFrame {
         lbl_daftar_nama.setText("Nama");
 
         txt_daftar_username.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
-
-        txt_daftar_password.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
 
         txt_daftar_nama.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
 
@@ -112,6 +111,8 @@ public class frm_daftar extends javax.swing.JFrame {
             }
         });
 
+        txt_daftar_password.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -120,19 +121,18 @@ public class frm_daftar extends javax.swing.JFrame {
                 .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lbl_daftar_password)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txt_daftar_password, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(lbl_daftar_username)
                         .addGap(18, 18, 18)
                         .addComponent(txt_daftar_username, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lbl_daftar_nama)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_daftar_nama)
+                            .addComponent(lbl_daftar_password))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btn_daftar_akun)
-                            .addComponent(txt_daftar_nama, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txt_daftar_nama, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                            .addComponent(txt_daftar_password))))
                 .addContainerGap(69, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -152,17 +152,17 @@ public class frm_daftar extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_daftar_username)
                     .addComponent(txt_daftar_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_daftar_password)
                     .addComponent(txt_daftar_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_daftar_nama)
                     .addComponent(txt_daftar_nama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(btn_daftar_akun)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -206,21 +206,33 @@ public class frm_daftar extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_back_loginActionPerformed
 
     private void btn_daftar_akunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_daftar_akunActionPerformed
-        try{
-            Class.forName(driver);
-            Connection kon = DriverManager.getConnection(
-                                    database,
-                                    user,
-                                    pass);
-            Statement stt = kon.createStatement();
-            String SQL = "INSERT INTO t_user(Username, Password, Nama) "
-                    + "VALUES ('"+txt_daftar_username.getText()+"', "
-                    + "'"+txt_daftar_password.getText()+"', "
-                    + "'"+txt_daftar_nama.getText()+"');";   
-            stt.close();
-            kon.close();
-        }catch (Exception e){
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Gagal Mendaftar!", JOptionPane.INFORMATION_MESSAGE);
+        if((txt_daftar_username.getText().isEmpty()) || (txt_daftar_password.getText().isEmpty())){
+            JOptionPane.showMessageDialog(null, "Data tidak boleh ada yang kosong!", "Gagal!", JOptionPane.CANCEL_OPTION);
+        }else{
+            int daftar = JOptionPane.showConfirmDialog(null,"Yakin ingin mendaftar?", "Confirmation",JOptionPane.YES_NO_OPTION);
+            if(daftar==0){
+                try{
+                    Class.forName(driver);
+                    Connection kon = DriverManager.getConnection(
+                                            database,
+                                            user,
+                                            pass);
+                    Statement stt = kon.createStatement();
+                    String SQL = "INSERT INTO t_user(Username, Password, Nama) "
+                            + "VALUES ('"+txt_daftar_username.getText()+"', "
+                            + "'"+txt_daftar_password.getText()+"', "
+                            + "'"+txt_daftar_nama.getText()+"');";   
+                    stt.executeUpdate(SQL);
+                    stt.close();
+                    kon.close();
+                    JOptionPane.showMessageDialog(null, "Sukses mendaftar");
+                    txt_daftar_username.setText("");
+                    txt_daftar_password.setText("");
+                    txt_daftar_nama.setText("");
+                }catch (Exception e){
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Gagal Mendaftar!", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
         }
     }//GEN-LAST:event_btn_daftar_akunActionPerformed
 
@@ -273,7 +285,7 @@ public class frm_daftar extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_daftar_username;
     private javax.swing.JLabel lbl_judul_daftar;
     private javax.swing.JTextField txt_daftar_nama;
-    private javax.swing.JTextField txt_daftar_password;
+    private javax.swing.JPasswordField txt_daftar_password;
     private javax.swing.JTextField txt_daftar_username;
     // End of variables declaration//GEN-END:variables
 }
