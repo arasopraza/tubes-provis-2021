@@ -172,7 +172,6 @@ public class frm_nilai extends javax.swing.JFrame {
         row = tbl_nilai.getSelectedRow();
         combo_nilai_nama.setSelectedItem(tableModel.getValueAt(row, 0));
         combo_nilai_nama_mk.setSelectedItem(tableModel.getValueAt(row, 1));
-//        txt_nilai_nim.setText(data[3].toString());
         txt_nilai_kehadiran.setText(tableModel.getValueAt(row, 2).toString());
         txt_nilai_tugas1.setText(tableModel.getValueAt(row, 3).toString());
         txt_nilai_tugas2.setText(tableModel.getValueAt(row, 4).toString());

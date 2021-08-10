@@ -188,18 +188,17 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
     int row = 0;
     public void tampil_field(){
         row = tbl_simulasi_nilai.getSelectedRow();
-        combo_nilai_akhir_nama_mk.setSelectedItem(tableModel.getValueAt(row, 1));
-        txt_nilai_akhir_kd_mk.setText(tableModel.getValueAt(row, 2).toString());
-        txt_nilai_akhir_persen_absen.setText(tableModel.getValueAt(row, 3).toString());
-        txt_nilai_akhir_persen_tugas.setText(tableModel.getValueAt(row, 4).toString());
-        txt_nilai_akhir_persen_uts.setText(tableModel.getValueAt(row, 5).toString());
-        txt_nilai_akhir_persen_uas.setText(tableModel.getValueAt(row, 6).toString());
-        txt_nilai_akhir_kehadiran.setText(tableModel.getValueAt(row, 7).toString());
-        txt_nilai_akhir_tugas1.setText(tableModel.getValueAt(row, 8).toString());
-        txt_nilai_akhir_tugas2.setText(tableModel.getValueAt(row, 9).toString());
-        txt_nilai_akhir_tugas3.setText(tableModel.getValueAt(row, 10).toString());
-        txt_nilai_akhir_uts.setText(tableModel.getValueAt(row, 11).toString());
-        txt_nilai_akhir_uas.setText(tableModel.getValueAt(row, 12).toString());
+        combo_nilai_akhir_nama_mk.setSelectedItem(tableModel.getValueAt(row, 0));
+        txt_nilai_akhir_persen_absen.setText(tableModel.getValueAt(row, 1).toString());
+        txt_nilai_akhir_persen_tugas.setText(tableModel.getValueAt(row, 2).toString());
+        txt_nilai_akhir_persen_uts.setText(tableModel.getValueAt(row, 3).toString());
+        txt_nilai_akhir_persen_uas.setText(tableModel.getValueAt(row, 4).toString());
+        txt_nilai_akhir_kehadiran.setText(tableModel.getValueAt(row, 5).toString());
+        txt_nilai_akhir_tugas1.setText(tableModel.getValueAt(row, 6).toString());
+        txt_nilai_akhir_tugas2.setText(tableModel.getValueAt(row, 7).toString());
+        txt_nilai_akhir_tugas3.setText(tableModel.getValueAt(row, 8).toString());
+        txt_nilai_akhir_uts.setText(tableModel.getValueAt(row, 9).toString());
+        txt_nilai_akhir_uas.setText(tableModel.getValueAt(row, 10).toString());
         
         btn_nilai_akhir_simpan.setEnabled(false);
         btn_nilai_akhir_ubah.setEnabled(true);
@@ -436,6 +435,11 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
                 "Nama MK", "Persen Absen", "Persen Tugas", "Persen UTS", "Persen UAS", "Absensi", "Tgs 1", "Tgs 2", "Tgs 3", "UTS", "UAS", "Nilai Absen", "Nilai Tugas", "Nilai UTS", "Nilai UAS", "Nilai Akhir", "Indeks", "Keterangan"
             }
         ));
+        tbl_simulasi_nilai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_simulasi_nilaiMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_simulasi_nilai);
 
         btn_nilai_akhir_tambah.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
@@ -928,6 +932,12 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
         btn_nilai_akhir_simpan.setEnabled(false);
         btn_nilai_akhir_batal.setEnabled(false);
     }//GEN-LAST:event_formWindowOpened
+
+    private void tbl_simulasi_nilaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_simulasi_nilaiMouseClicked
+        if(evt.getClickCount()==1){
+            tampil_field();
+        }
+    }//GEN-LAST:event_tbl_simulasi_nilaiMouseClicked
 
     /**
      * @param args the command line arguments
