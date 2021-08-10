@@ -558,6 +558,7 @@
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbl_simulasi_nilaiMouseClicked"/>
+                <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbl_simulasi_nilaiMouseEntered"/>
               </Events>
             </Component>
           </SubComponents>
@@ -591,6 +592,7 @@
           <Events>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_nilai_akhir_ubahMouseEntered"/>
             <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_nilai_akhir_ubahMouseExited"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_nilai_akhir_ubahActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btn_nilai_akhir_hapus">

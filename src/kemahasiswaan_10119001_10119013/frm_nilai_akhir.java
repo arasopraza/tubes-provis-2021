@@ -439,6 +439,9 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_simulasi_nilaiMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                tbl_simulasi_nilaiMouseEntered(evt);
+            }
         });
         jScrollPane1.setViewportView(tbl_simulasi_nilai);
 
@@ -468,6 +471,11 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn_nilai_akhir_ubahMouseExited(evt);
+            }
+        });
+        btn_nilai_akhir_ubah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_nilai_akhir_ubahActionPerformed(evt);
             }
         });
 
@@ -781,23 +789,21 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_nilai_akhir_tambahActionPerformed
 
     private void btn_nilai_akhir_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nilai_akhir_simpanActionPerformed
-        // TODO add your handling code here:
-        String data[] = new String[19];
-        double jmlhPertemuan = Double.valueOf(txt_nilai_akhir_kehadiran.getText());
-        int angkatan = 2021;
-        double tugas_satu = Double.valueOf(txt_nilai_akhir_tugas1.getText());
-        double tugas_dua = Double.valueOf(txt_nilai_akhir_tugas2.getText());
-        double tugas_tiga = Double.valueOf(txt_nilai_akhir_tugas3.getText());
-        double uts = Double.valueOf(txt_nilai_akhir_uts.getText());
-        double uas = Double.valueOf(txt_nilai_akhir_uas.getText());
-        double persen_absen = Double.valueOf(txt_nilai_akhir_persen_absen.getText())/100;
-        double persen_tugas = Double.valueOf(txt_nilai_akhir_persen_tugas.getText())/100;
-        double persen_uts = Double.valueOf(txt_nilai_akhir_persen_uts.getText())/100;
-        double persen_uas = Double.valueOf(txt_nilai_akhir_persen_uas.getText())/100;
-        
-        if (("".equals(txt_nilai_akhir_kehadiran.getText())) || ("".equals(txt_nilai_akhir_tugas1.getText())) || ("".equals(txt_nilai_akhir_tugas2.getText())) || ("".equals(txt_nilai_akhir_tugas3.getText())) || ("".equals(txt_nilai_akhir_uts.getText())) || ("".equals(txt_nilai_akhir_uas.getText()))){
-            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, silahkan dilengkapi", "Error!", JOptionPane.CANCEL_OPTION);
+        if(("".equals(txt_nilai_akhir_kehadiran.getText())) || ("".equals(txt_nilai_akhir_tugas1.getText())) || ("".equals(txt_nilai_akhir_tugas2.getText())) || ("".equals(txt_nilai_akhir_tugas3.getText())) || ("".equals(txt_nilai_akhir_uts.getText())) || ("".equals(txt_nilai_akhir_uas.getText()))){
+            JOptionPane.showMessageDialog(null, "data tidak boleh kosong");
         } else {
+            double jmlhPertemuan = Double.valueOf(txt_nilai_akhir_kehadiran.getText());
+            int angkatan = 2021;
+            double tugas_satu = Double.valueOf(txt_nilai_akhir_tugas1.getText());
+            double tugas_dua = Double.valueOf(txt_nilai_akhir_tugas2.getText());
+            double tugas_tiga = Double.valueOf(txt_nilai_akhir_tugas3.getText());
+            double uts = Double.valueOf(txt_nilai_akhir_uts.getText());
+            double uas = Double.valueOf(txt_nilai_akhir_uas.getText());
+            double persen_absen = Double.valueOf(txt_nilai_akhir_persen_absen.getText())/100;
+            double persen_tugas = Double.valueOf(txt_nilai_akhir_persen_tugas.getText())/100;
+            double persen_uts = Double.valueOf(txt_nilai_akhir_persen_uts.getText())/100;
+            double persen_uas = Double.valueOf(txt_nilai_akhir_persen_uas.getText())/100;
+            
             //hitung nilai_absen
             double nilai_absen = (jmlhPertemuan/14)*5;
 
@@ -870,16 +876,16 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
                                 + " '"+nilai_akhir+"' ,"
                                 + " '"+indeks+"' ,"
                                 + " '"+ket+"' ,"
-                                + " '"+persen_absen+"' ,"
-                                + " '"+persen_tugas+"' ,"
-                                + " '"+persen_uts+"' ,"
-                                + " '"+persen_uas+"' )";
+                                + " '"+txt_nilai_akhir_persen_absen.getText()+"' ,"
+                                + " '"+txt_nilai_akhir_persen_tugas.getText()+"' ,"
+                                + " '"+txt_nilai_akhir_persen_uts.getText()+"' ,"
+                                + " '"+txt_nilai_akhir_persen_uas.getText()+"' )";
                 stt.executeUpdate(SQL);
                 data[0] = combo_nilai_akhir_nama_mk.getSelectedItem().toString();
-                data[1] = String.valueOf(persen_absen);
-                data[2] = String.valueOf(persen_tugas);
-                data[3] = String.valueOf(persen_uts);
-                data[4] = String.valueOf(persen_uas);
+                data[1] = String.valueOf(txt_nilai_akhir_persen_absen.getText());
+                data[2] = String.valueOf(txt_nilai_akhir_persen_tugas.getText());
+                data[3] = String.valueOf(txt_nilai_akhir_persen_uts.getText());
+                data[4] = String.valueOf(txt_nilai_akhir_persen_uas.getText());
                 data[5] = String.valueOf(jmlhPertemuan);
                 data[6] = String.valueOf(tugas_satu);
                 data[7] = String.valueOf(tugas_dua);
@@ -903,8 +909,10 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Eror",
                 JOptionPane.INFORMATION_MESSAGE);
-            }    
+            }
         }
+        
+        
     }//GEN-LAST:event_btn_nilai_akhir_simpanActionPerformed
 
     private void combo_nilai_akhir_nama_mkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_nilai_akhir_nama_mkActionPerformed
@@ -936,8 +944,141 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
     private void tbl_simulasi_nilaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_simulasi_nilaiMouseClicked
         if(evt.getClickCount()==1){
             tampil_field();
+            btn_nilai_akhir_tambah.setEnabled(true);
+            btn_nilai_akhir_ubah.setEnabled(true);
+            btn_nilai_akhir_hapus.setEnabled(true);
+            btn_nilai_akhir_simpan.setEnabled(false);
         }
     }//GEN-LAST:event_tbl_simulasi_nilaiMouseClicked
+
+    private void tbl_simulasi_nilaiMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_simulasi_nilaiMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbl_simulasi_nilaiMouseEntered
+
+    private void btn_nilai_akhir_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nilai_akhir_ubahActionPerformed
+        if (("".equals(txt_nilai_akhir_kehadiran.getText())) || ("".equals(txt_nilai_akhir_tugas1.getText())) || ("".equals(txt_nilai_akhir_tugas2.getText())) || ("".equals(txt_nilai_akhir_tugas3.getText())) || ("".equals(txt_nilai_akhir_uts.getText())) || ("".equals(txt_nilai_akhir_uas.getText()))){
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, silahkan dilengkapi", "Error!", JOptionPane.CANCEL_OPTION);
+        } else {
+            String data[] = new String[19];
+            double jmlhPertemuan = Double.valueOf(txt_nilai_akhir_kehadiran.getText());
+            int angkatan = 2021;
+            double tugas_satu = Double.valueOf(txt_nilai_akhir_tugas1.getText());
+            double tugas_dua = Double.valueOf(txt_nilai_akhir_tugas2.getText());
+            double tugas_tiga = Double.valueOf(txt_nilai_akhir_tugas3.getText());
+            double uts = Double.valueOf(txt_nilai_akhir_uts.getText());
+            double uas = Double.valueOf(txt_nilai_akhir_uas.getText());
+            double persen_absen = Double.valueOf(txt_nilai_akhir_persen_absen.getText())/100;
+            double persen_tugas = Double.valueOf(txt_nilai_akhir_persen_tugas.getText())/100;
+            double persen_uts = Double.valueOf(txt_nilai_akhir_persen_uts.getText())/100;
+            double persen_uas = Double.valueOf(txt_nilai_akhir_persen_uas.getText())/100;
+            
+            //hitung nilai_absen
+            double nilai_absen = (jmlhPertemuan/14)*5;
+
+            //hitung nilai_tugas
+            double rataTugas = (tugas_satu + tugas_dua + tugas_tiga)/3;
+            double nilai_tugas = rataTugas *0.25;
+
+            //hitung nilai_uts
+            double nilai_uts = uts * 0.30;
+
+            //hitung nilai_uas
+            double nilai_uas = uas * 0.40;
+
+            //hitung nilai_akhir
+            double nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
+
+            //cari nilai indeks dan keterangan
+            String indeks = "";
+            String ket = "";
+            if((nilai_akhir >= 80) && (nilai_akhir <=100)){
+                indeks = "A";
+                if(jmlhPertemuan<11){
+                    ket = "Tidak Lulus";
+                }else{
+                    ket = "Lulus";
+                }
+            }if((nilai_akhir >= 68) && (nilai_akhir <80)){
+                indeks = "B";
+                if(jmlhPertemuan<11){
+                    ket = "Tidak Lulus";
+                }else{
+                    ket = "Lulus";
+                }
+            }if((nilai_akhir >= 56) && (nilai_akhir <68)){
+                indeks = "C";
+                if(jmlhPertemuan<11){
+                    ket = "Tidak Lulus";
+                }else{
+                    ket = "Lulus";
+                }
+            }if((nilai_akhir >= 45) && (nilai_akhir <56)){
+                indeks = "D";
+                ket = "Tidak Lulus";
+            }if((nilai_akhir >= 0) && (nilai_akhir <45)){
+                indeks = "E";
+                ket = "Tidak Lulus";
+            }
+            
+            try {
+                Class.forName(driver);
+                java.sql.Connection kon = DriverManager.getConnection(
+                                    database,
+                                    user,
+                                    pass);
+                Statement stt = kon.createStatement();
+                String SQL = "UPDATE t_nilai_akhir "
+                        + "SET kehadiran = '"+txt_nilai_akhir_kehadiran.getText()+"', "
+                        + "tugas_satu = '"+txt_nilai_akhir_tugas1.getText()+"', "
+                        + "tugas_dua = '"+txt_nilai_akhir_tugas2.getText()+"', "
+                        + "tugas_tiga = '"+txt_nilai_akhir_tugas3.getText()+"', "
+                        + "uts = '"+txt_nilai_akhir_uts.getText()+"', "
+                        + "uas = '"+txt_nilai_akhir_uas.getText()+"', "
+                        + "nilai_absen = '"+nilai_absen+"', "
+                        + "nilai_tugas = '"+nilai_tugas+"', "
+                        + "nilai_uts = '"+nilai_uts+"', "
+                        + "nilai_uas = '"+nilai_uas+"', "
+                        + "nilai_akhir = '"+nilai_akhir+"', "
+                        + "indeks = '"+indeks+"', "
+                        + "ket = '"+ket+"', "
+                        + "persen_absen = '"+txt_nilai_akhir_persen_absen.getText()+"', "
+                        + "persen_tugas = '"+txt_nilai_akhir_persen_tugas.getText()+"', "
+                        + "persen_uts = '"+txt_nilai_akhir_persen_uts.getText()+"', "
+                        + "persen_uas = '"+txt_nilai_akhir_persen_uas.getText()+"'"
+                        + "WHERE kd_mk = '"+txt_nilai_akhir_kd_mk.getText()+"';";
+                stt.executeUpdate(SQL);
+                data[0] = combo_nilai_akhir_nama_mk.getSelectedItem().toString();
+                data[1] = String.valueOf(txt_nilai_akhir_persen_absen.getText());
+                data[2] = String.valueOf(txt_nilai_akhir_persen_tugas.getText());
+                data[3] = String.valueOf(txt_nilai_akhir_persen_uts.getText());
+                data[4] = String.valueOf(txt_nilai_akhir_persen_uas.getText());
+                data[5] = String.valueOf(jmlhPertemuan);
+                data[6] = String.valueOf(tugas_satu);
+                data[7] = String.valueOf(tugas_dua);
+                data[8] = String.valueOf(tugas_tiga);
+                data[9] = String.valueOf(uts);
+                data[10] = String.valueOf(uas);
+                data[11] = String.valueOf(nilai_absen);
+                data[12] = String.valueOf(nilai_tugas);
+                data[13] = String.valueOf(nilai_uts);
+                data[14] = String.valueOf(nilai_uas);
+                data[15] = String.valueOf(nilai_akhir);
+                data[16] = indeks;
+                data[17] = ket;
+                tableModel.removeRow(row);
+                tableModel.addRow(data);
+                stt.close();
+                kon.close();
+                membersihkan_teks();
+                btn_nilai_akhir_ubah.setEnabled(false);
+                btn_nilai_akhir_tambah.setEnabled(true);
+                nonaktif_teks();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Eror",
+                JOptionPane.INFORMATION_MESSAGE);
+            }    
+        }
+    }//GEN-LAST:event_btn_nilai_akhir_ubahActionPerformed
 
     /**
      * @param args the command line arguments
