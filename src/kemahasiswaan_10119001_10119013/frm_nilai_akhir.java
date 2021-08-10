@@ -490,6 +490,11 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
                 btn_nilai_akhir_hapusMouseExited(evt);
             }
         });
+        btn_nilai_akhir_hapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_nilai_akhir_hapusActionPerformed(evt);
+            }
+        });
 
         btn_nilai_akhir_simpan.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
         btn_nilai_akhir_simpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kemahasiswaan_10119001_10119013/simpan.png"))); // NOI18N
@@ -1080,6 +1085,29 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
             }    
         }
     }//GEN-LAST:event_btn_nilai_akhir_ubahActionPerformed
+
+    private void btn_nilai_akhir_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nilai_akhir_hapusActionPerformed
+        try {
+             Class.forName(driver);
+             java.sql.Connection kon = DriverManager.getConnection(
+                                    database,
+                                    user,
+                                    pass);
+             Statement stt = kon.createStatement();
+             String SQL = "DELETE FROM t_nilai "
+                     + "WHERE kd_mk = '"+txt_nilai_akhir_kd_mk.getText()+"';";
+                stt.executeUpdate(SQL);
+                tableModel.removeRow(row);
+                stt.close();
+                kon.close();
+                membersihkan_teks();
+                btn_nilai_akhir_ubah.setEnabled(false);
+                btn_nilai_akhir_hapus.setEnabled(false);
+                btn_nilai_akhir_simpan.setEnabled(false);
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_btn_nilai_akhir_hapusActionPerformed
 
     /**
      * @param args the command line arguments

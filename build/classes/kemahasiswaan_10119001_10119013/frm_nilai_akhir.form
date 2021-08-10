@@ -608,6 +608,7 @@
           <Events>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_nilai_akhir_hapusMouseEntered"/>
             <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_nilai_akhir_hapusMouseExited"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_nilai_akhir_hapusActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btn_nilai_akhir_simpan">
