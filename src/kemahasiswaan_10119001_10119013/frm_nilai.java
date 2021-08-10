@@ -1019,23 +1019,18 @@ public class frm_nilai extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_nilai_keyKeyReleased
 
     private void btn_nilai_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nilai_simpanActionPerformed
-        // TODO add your handling code here:
-        String data[] = new String[17];
-        double jmlhPertemuan = Double.valueOf(txt_nilai_kehadiran.getText());
-        int angkatan = 2021;
-        double tugas_satu = Double.valueOf(txt_nilai_tugas1.getText());
-        double tugas_dua = Double.valueOf(txt_nilai_tugas2.getText());
-        double tugas_tiga = Double.valueOf(txt_nilai_tugas3.getText());
-        double uts = Double.valueOf(txt_nilai_uts.getText());
-        double uas = Double.valueOf(txt_nilai_uas.getText());
-        
-        if((txt_nilai_kehadiran.getText().isEmpty()) || (txt_nilai_tugas1.getText().isEmpty())){
-            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, silahkan dilengkapi", "Error!", JOptionPane.CANCEL_OPTION);
-        } else if((txt_nilai_tugas2.getText().isEmpty()) || (txt_nilai_tugas2.getText().isEmpty())){
-            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, silahkan dilengkapi", "Error!", JOptionPane.CANCEL_OPTION);
-        }else if((txt_nilai_tugas3.getText().isEmpty()) || (txt_nilai_uts.getText().isEmpty()) || (txt_nilai_uas.getText().isEmpty())){
-            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong, silahkan dilengkapi", "Error!", JOptionPane.CANCEL_OPTION);
-        }else {
+        if((txt_nilai_kehadiran.getText().isEmpty()) || (txt_nilai_tugas1.getText().isEmpty()) || (txt_nilai_tugas2.getText().isEmpty()) || (txt_nilai_tugas3.getText().isEmpty()) || (txt_nilai_uts.getText().isEmpty()) || (txt_nilai_uas.getText().isEmpty())){
+            JOptionPane.showMessageDialog(null, "Lengkapi data!!!", "Error!", JOptionPane.CANCEL_OPTION);
+        }else{
+            String data[] = new String[17];
+            double jmlhPertemuan = Double.valueOf(txt_nilai_kehadiran.getText());
+            int angkatan = 2021;
+            double tugas_satu = Double.valueOf(txt_nilai_tugas1.getText());
+            double tugas_dua = Double.valueOf(txt_nilai_tugas2.getText());
+            double tugas_tiga = Double.valueOf(txt_nilai_tugas3.getText());
+            double uts = Double.valueOf(txt_nilai_uts.getText());
+            double uas = Double.valueOf(txt_nilai_uas.getText());
+            
             //hitung nilai_absen
             double nilai_absen = (jmlhPertemuan/14)*5;
 
