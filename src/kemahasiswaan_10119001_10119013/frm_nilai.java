@@ -815,8 +815,7 @@ public class frm_nilai extends javax.swing.JFrame {
                                     pass);
              Statement stt = kon.createStatement();
              String SQL = "DELETE FROM t_nilai "
-                     + "WHERE nim = '"+txt_nilai_nim.getText()+"' "
-                     + "AND kd_mk = '"+txt_nilai_kd_mk.getText()+"';";
+                     + "WHERE kd_mk = '"+txt_nilai_kd_mk.getText()+"';";
                 stt.executeUpdate(SQL);
                 tableModel.removeRow(row);
                 stt.close();
