@@ -229,39 +229,43 @@ public class frm_login extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_keluarActionPerformed
 
     private void btn_log_inActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_log_inActionPerformed
-        String username = txt_username.getText();
-        String password = String.valueOf(txt_password.getPassword());
-        try {
-            Class.forName(driver);
-            java.sql.Connection kon = DriverManager.getConnection(
-                    database,
-                    user,
-                    pass);
-            Statement stt = kon.createStatement();
-            String SQL = "SELECT * FROM t_user WHERE Username='"+username+"' AND Password='"+password+"'";
-            ResultSet res = stt.executeQuery(SQL);
-           
-            if (res.next()) {
-                if (attempt < 3 && username.equals(res.getString("Username")) && password.equals(res.getString("Password"))){
-                JOptionPane.showMessageDialog(null, "Berhasil Masuk");
-                frm_kasus k = new frm_kasus();
-                k.setVisible(true);
-                this.dispose();
+        if((txt_username.getText().isEmpty()) || (txt_password.getText().isEmpty())){
+            JOptionPane.showMessageDialog(null, "Username atau Password belum diisi!");
+        }else{
+            String username = txt_username.getText();
+            String password = String.valueOf(txt_password.getPassword());
+            try {
+                Class.forName(driver);
+                java.sql.Connection kon = DriverManager.getConnection(
+                        database,
+                        user,
+                        pass);
+                Statement stt = kon.createStatement();
+                String SQL = "SELECT * FROM t_user WHERE Username='"+username+"' AND Password='"+password+"'";
+                ResultSet res = stt.executeQuery(SQL);
+
+                if (res.next()) {
+                    if (attempt < 3 && username.equals(res.getString("Username")) && password.equals(res.getString("Password"))){
+                    JOptionPane.showMessageDialog(null, "Berhasil Masuk");
+                    frm_kasus k = new frm_kasus();
+                    k.setVisible(true);
+                    this.dispose();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Nama pengguna dan password tidak ditemukan, silahkan daftar");
+                    txt_username.setText("");
+                    txt_password.setText("");
+                    txt_username.requestFocus();
+                    attempt++;
+                    if (attempt > 3) {
+                     JOptionPane.showMessageDialog(rootPane, "Anda sudah melakukan 3 kali percobaan");
+                     this.dispose();
+                    }
                 }
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "Nama pengguna dan password tidak ditemukan, silahkan daftar");
-                txt_username.setText("");
-                txt_password.setText("");
-                txt_username.requestFocus();
-                attempt++;
-                if (attempt > 3) {
-                 JOptionPane.showMessageDialog(rootPane, "Anda sudah melakukan 3 kali percobaan");
-                 this.dispose();
-                }
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(rootPane, "Gagal");
             }
-        } catch (Exception e){
-            JOptionPane.showMessageDialog(rootPane, "Gagal");
-        }   
+        } 
     }//GEN-LAST:event_btn_log_inActionPerformed
 
     private void btn_log_inMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_log_inMouseEntered
