@@ -1072,6 +1072,7 @@ public class frm_nilai_akhir extends javax.swing.JFrame {
                 membersihkan_teks();
                 btn_nilai_akhir_ubah.setEnabled(false);
                 btn_nilai_akhir_tambah.setEnabled(true);
+                btn_nilai_akhir_hapus.setEnabled(false);
                 nonaktif_teks();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Eror",
